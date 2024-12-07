@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "UTS_REACT_NATIVE",
+    "slug": "UTS_REACT_NATIVE",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/Images/UTS_logo.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/Images/UTS_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/Images/UTS_logo.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/Images/UTS_logo.png"
+    }
+  }
+}
