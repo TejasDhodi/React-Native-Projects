@@ -1,11 +1,15 @@
-import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import { StyleSheet, Text, View, Image, FlatList, Pressable } from "react-native";
 import React from "react";
 import {
   heroFirstSectionNavData,
   heroSecondSectionNavData,
 } from "../Service/Servicedata";
 
-const Hero = () => {
+interface HeroProps {
+  handletabContents: (content: string) => void,
+  tabContents: string
+}
+const Hero: React.FC<HeroProps> = ({ handletabContents, tabContents }) => {
   const {
     heroContainer,
     heroFirstSection,
@@ -19,19 +23,20 @@ const Hero = () => {
     secondNavLinkImg,
     heroNavLinks2,
     secondNavLinkText,
+    activeNavLinks
   } = styles;
   return (
     <View style={heroContainer}>
       <View style={heroFirstSection}>
         <Text style={promotionalText}>
           Indian Railways offers 3% bonus on recharge of R-Wallet
-        </Text> 
+        </Text>
         <View style={heroNav1}>
           {heroFirstSectionNavData.map(({ text, imgPath }, index) => (
-            <View style={navLinks} key={index}>
-              <Image source={imgPath} style={navLinkImg} />
-              <Text style={navLinkText}>{text}</Text>
-            </View>
+            <Pressable style={[navLinks, tabContents === text && activeNavLinks]} key={index} onPress={() => handletabContents(text)}>
+                <Image source={imgPath} style={navLinkImg} />
+                <Text style={navLinkText}>{text}</Text>
+            </Pressable>
           ))}
         </View>
       </View>
@@ -39,10 +44,10 @@ const Hero = () => {
         <FlatList
           data={heroSecondSectionNavData}
           renderItem={({ item, index }) => (
-            <View style={[navLinks, heroNavLinks2]}>
+            <Pressable style={[navLinks, heroNavLinks2]}>
               <Image source={item.imgPath} style={secondNavLinkImg} />
               <Text style={secondNavLinkText}>{item.text}</Text>
-            </View>
+            </Pressable>
           )}
           keyExtractor={(item, index) => index.toString()}
           numColumns={3}
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     marginBlock: 5,
-    color: "green",
+    color: "blue",
   },
   heroNav1: {
     flexDirection: "row",
@@ -79,11 +84,13 @@ const styles = StyleSheet.create({
   },
   navLinks: {
     alignItems: "center",
-    marginBottom: 10,
+    // marginBottom: 10,
     width: "20%",
-    // borderBottomColor: '#FF6D00',
-    // borderBottomWidth: 2,
-    // paddingBottom: 3
+  },
+  activeNavLinks: {
+    borderBottomColor: '#FF6D00',
+    borderBottomWidth: 2,
+    paddingBottom: 3
   },
   heroNavLinks2: {
     height: 60,

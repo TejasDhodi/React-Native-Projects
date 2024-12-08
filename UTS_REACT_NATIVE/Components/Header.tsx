@@ -48,8 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingInline: 20,
-    paddingTop: 25,
-    paddingBottom: 5,
+    paddingBlock: 5
   },
   navBrand: {
     flexDirection: "row",

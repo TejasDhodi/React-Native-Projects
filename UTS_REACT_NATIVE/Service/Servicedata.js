@@ -5,11 +5,11 @@ import Platform_ticket from '../assets/Images/Platform_ticket.png'
 import Season_ticket from '../assets/Images/Season_ticket.png'
 
 export const heroFirstSectionNavData = [
-    {imgPath: Journey_Ticket,text: 'Journey Ticket'},
-    {imgPath: QR_booking,text: 'OR Booking'},
-    {imgPath: Quick_Booking,text: 'Quick Booking'},
-    {imgPath: Platform_ticket,text: 'Platform Ticket'},
-    {imgPath: Season_ticket,text: 'Season Ticket'},
+    { imgPath: Journey_Ticket, text: 'Journey Ticket' },
+    { imgPath: QR_booking, text: 'QR Booking' },
+    { imgPath: Quick_Booking, text: 'Quick Booking' },
+    { imgPath: Platform_ticket, text: 'Platform Ticket' },
+    { imgPath: Season_ticket, text: 'Season Ticket' },
 ]
 
 import Cancel_Ticket from '../assets/Images/Cancel_ticket.png'
@@ -20,10 +20,17 @@ import Transaction_status from '../assets/Images/Transaction.png'
 import Profile from '../assets/Images/Profile_img.png'
 
 export const heroSecondSectionNavData = [
-    {imgPath: Cancel_Ticket,text: 'Cancel Ticket'},
-    {imgPath: Booking_History,text: 'Booking History'},
-    {imgPath: Show_ticket,text: 'Show Ticket'},
-    {imgPath: R_Wallet,text: 'R Wallet'},
-    {imgPath: Profile,text: 'My Profile'},
-    {imgPath: Transaction_status,text: 'Transactions'},
+    { imgPath: Cancel_Ticket, text: 'Cancel Ticket' },
+    { imgPath: Booking_History, text: 'Booking History' },
+    { imgPath: Show_ticket, text: 'Show Ticket' },
+    { imgPath: R_Wallet, text: 'R Wallet' },
+    { imgPath: Profile, text: 'My Profile' },
+    { imgPath: Transaction_status, text: 'Transactions' },
+]
+
+export const buttonsData = [
+    { Journey_Ticket_Button: ['NEXT TRAINS', 'GET FARE'] },
+    { Quick_Booking_Button: ['NEXT'] },
+    { Platform_ticket_Button: ['BOOK TICKET'] },
+    { Season_ticket_Button: ['ISSUE TICKET', 'RENEW TICKET'] }
 ]
