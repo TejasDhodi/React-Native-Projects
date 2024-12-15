@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import GradientComponent from './GradientComponent'
 import { buttonsData } from '../Service/Servicedata'
 import { Picker } from '@react-native-picker/picker'
+import StationDatModal from './StationDatModal'
 
 interface HeaderTabProps {
     tabContents: string
@@ -11,117 +12,140 @@ const HeaderTabContents: React.FC<HeaderTabProps> = ({ tabContents }) => {
     const [activeRadio, setActiveRadio] = useState(0);
     const [Persons, setPersons] = useState(1);
     const [paymenType, setPaymentType] = useState('RWALLET');
+    const [modalVisibility, setModalVisibility] = useState(false);
+    const [stations, setStations] = useState({
+        sourceStation: 'STN',
+        destinationStation: 'STN'
+    })
+    const [selectedStationOption, setSelectedStationOption] = useState('');
+
+    const handleModalVisibility = (visibility: boolean, selection: string) => {
+        if (activeRadio > 0) {
+            setModalVisibility(visibility)
+            setSelectedStationOption(selection)
+        } else {
+            alert('Select Booking Mode to proceed further')
+        }
+    }
     return (
-        <View style={styles.headerContetContainer}>
-            <GradientComponent>
-                <Text style={styles.bookingHeader}>{tabContents !== 'Journey Ticket' ? tabContents : 'Normal Booking'}</Text>
-            </GradientComponent>
+        <>
+            <View style={styles.headerContetContainer}>
+                <GradientComponent>
+                    <Text style={styles.bookingHeader}>{tabContents !== 'Journey Ticket' ? tabContents : 'Normal Booking'}</Text>
+                </GradientComponent>
 
-            {
-                tabContents !== 'QR Booking' &&
-                <View style={styles.radioControlContainer}>
-                    <TouchableOpacity style={styles.radioControl} onPress={() => setActiveRadio(1)}>
-                        <View style={[styles.radioBorder, activeRadio === 1 && styles.ActiveRadioBorder]}>
-                            {activeRadio === 1 && <View style={styles.radioColor}></View>}
-                        </View>
-                        <Text style={styles.radioText}>Book & Travel (Paperless)</Text>
-                    </TouchableOpacity>
+                {
+                    tabContents !== 'QR Booking' &&
+                    <View style={styles.radioControlContainer}>
+                        <TouchableOpacity style={styles.radioControl} onPress={() => setActiveRadio(1)}>
+                            <View style={[styles.radioBorder, activeRadio === 1 && styles.ActiveRadioBorder]}>
+                                {activeRadio === 1 && <View style={styles.radioColor}></View>}
+                            </View>
+                            <Text style={styles.radioText}>Book & Travel (Paperless)</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.radioControl} onPress={() => setActiveRadio(2)}>
-                        <View style={[styles.radioBorder, activeRadio === 2 && styles.ActiveRadioBorder]}>
-                            {activeRadio === 2 && <View style={styles.radioColor}></View>}
-                        </View>
-                        <Text style={styles.radioText}>Book & Print (Paper)</Text>
-                    </TouchableOpacity>
-                </View>
-            }
-            {
-                tabContents === 'QR Booking' &&
-                <View style={styles.QR_BookingSection}>
-                    <TouchableHighlight style={[styles.gradientBtn, styles.qrBookingControl]}><GradientComponent><Text style={styles.bookingControlBtn}>JOURNEY TICKET BY QR</Text></GradientComponent></TouchableHighlight>
-                    <TouchableHighlight style={[styles.gradientBtn, styles.qrBookingControl]}><GradientComponent><Text style={styles.bookingControlBtn}>pLATFORM TICKET BY QR</Text></GradientComponent></TouchableHighlight>
-                    <TouchableHighlight style={[styles.gradientBtn, styles.qrBookingControl]}><GradientComponent><Text style={styles.bookingControlBtn}>SUPERFAST SUPERCHARGE BY QR</Text></GradientComponent></TouchableHighlight>
-                </View>
-            }
-            {
-                tabContents === 'Platform Ticket' &&
-                <View style={styles.platformTicketSection}>
-                    <View style={styles.searchStation}>
-                        <Text style={styles.stationLabel}>Station Name / Code</Text>
-                        <TextInput
-                            style={styles.stationInputText}
-                            placeholder='Station Name / Code'
-                        />
+                        <TouchableOpacity style={styles.radioControl} onPress={() => setActiveRadio(2)}>
+                            <View style={[styles.radioBorder, activeRadio === 2 && styles.ActiveRadioBorder]}>
+                                {activeRadio === 2 && <View style={styles.radioColor}></View>}
+                            </View>
+                            <Text style={styles.radioText}>Book & Print (Paper)</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.bookingCredentials}>
-                        <View style={styles.bookingDropdownContainer}>
-                            <Text>Person(s)</Text>
-                            <Picker
-                                selectedValue={Persons}
-                                onValueChange={(person) => setPersons(person)}
-                                style={styles.picker}
-                            >
-                                {['ONE (1)', 'TWO (2)', 'THREE (1)', 'FOUR (1)'].map((currElem, index) => (
-                                    <Picker.Item
-                                        label={currElem}
-                                        value={index + 1}
-                                        key={index}
-                                        style={styles.pickerItem} />
-                                ))}
-                            </Picker>
+                }
+                {
+                    tabContents === 'QR Booking' &&
+                    <View style={styles.QR_BookingSection}>
+                        <TouchableHighlight style={[styles.gradientBtn, styles.qrBookingControl]}><GradientComponent><Text style={styles.bookingControlBtn}>JOURNEY TICKET BY QR</Text></GradientComponent></TouchableHighlight>
+                        <TouchableHighlight style={[styles.gradientBtn, styles.qrBookingControl]}><GradientComponent><Text style={styles.bookingControlBtn}>pLATFORM TICKET BY QR</Text></GradientComponent></TouchableHighlight>
+                        <TouchableHighlight style={[styles.gradientBtn, styles.qrBookingControl]}><GradientComponent><Text style={styles.bookingControlBtn}>SUPERFAST SUPERCHARGE BY QR</Text></GradientComponent></TouchableHighlight>
+                    </View>
+                }
+                {
+                    tabContents === 'Platform Ticket' &&
+                    <View style={styles.platformTicketSection}>
+                        <View style={styles.searchStation}>
+                            <Text style={styles.stationLabel}>Station Name / Code</Text>
+                            <TextInput
+                                style={styles.stationInputText}
+                                placeholder='Station Name / Code'
+                            />
                         </View>
-                        <View style={styles.bookingDropdownContainer}>
-                            <Text>Payment Type</Text>
-                            <Picker
-                                selectedValue={paymenType}
-                                onValueChange={(payment) => setPaymentType(payment)}
-                                style={styles.picker}
-                            >
-                                {['RWALLET', 'PAY USING :- UPI, DEBIT CARD, CREDIT CARD OR NET BANKING'].map((currElem, index) => (
-                                    <Picker.Item
-                                        label={currElem}
-                                        value={index + 1}
-                                        key={index}
-                                        style={styles.pickerItem} />
-                                ))}
-                            </Picker>
+                        <View style={styles.bookingCredentials}>
+                            <View style={styles.bookingDropdownContainer}>
+                                <Text>Person(s)</Text>
+                                <Picker
+                                    selectedValue={Persons}
+                                    onValueChange={(person) => setPersons(person)}
+                                    style={styles.picker}
+                                >
+                                    {['ONE (1)', 'TWO (2)', 'THREE (1)', 'FOUR (1)'].map((currElem, index) => (
+                                        <Picker.Item
+                                            label={currElem}
+                                            value={index + 1}
+                                            key={index}
+                                            style={styles.pickerItem} />
+                                    ))}
+                                </Picker>
+                            </View>
+                            <View style={styles.bookingDropdownContainer}>
+                                <Text>Payment Type</Text>
+                                <Picker
+                                    selectedValue={paymenType}
+                                    onValueChange={(payment) => setPaymentType(payment)}
+                                    style={styles.picker}
+                                >
+                                    {['RWALLET', 'PAY USING :- UPI, DEBIT CARD, CREDIT CARD OR NET BANKING'].map((currElem, index) => (
+                                        <Picker.Item
+                                            label={currElem}
+                                            value={index + 1}
+                                            key={index}
+                                            style={styles.pickerItem} />
+                                    ))}
+                                </Picker>
+                            </View>
                         </View>
                     </View>
-                </View>
-            }
-            {
-                tabContents === 'Journey Ticket' &&
-                <View style={styles.chooseStationsContainer}>
-                    <View style={[styles.chooseStation, styles.sourceStation]}>
-                        <Text style={styles.chooseMsg}>Depart from</Text>
-                        <Text style={styles.stationName}>STN</Text>
-                        <Text style={[styles.chooseMsg, styles.chooseMsgLabel]}>Station Name</Text>
-                    </View>
+                }
+                {
+                    tabContents === 'Journey Ticket' &&
+                    <View style={styles.chooseStationsContainer}>
+                        <View style={[styles.chooseStation, styles.sourceStation]}>
+                            <Text style={styles.chooseMsg}>Depart from</Text>
+                            <Text style={styles.stationName} onPress={() => handleModalVisibility(true, 'source')}>{stations.sourceStation}</Text>
+                            <Text style={[styles.chooseMsg, styles.chooseMsgLabel]}>Station Name</Text>
+                        </View>
 
-                    <Image source={require('../assets/Images/Swap_image.png')} style={styles.swapStationImg} />
+                        <Image source={require('../assets/Images/Swap_image.png')} style={styles.swapStationImg} />
 
-                    <View style={[styles.chooseStation, styles.destinationStation]}>
-                        <Text style={styles.chooseMsg}>Going to</Text>
-                        <Text style={styles.stationName}>STN</Text>
-                        <Text style={[styles.chooseMsg, styles.chooseMsgLabel]}>Station Name</Text>
+                        <View style={[styles.chooseStation, styles.destinationStation]}>
+                            <Text style={styles.chooseMsg}>Going to</Text>
+                            <Text style={styles.stationName} onPress={() => handleModalVisibility(true, 'destination')}>{stations.destinationStation}</Text>
+                            <Text style={[styles.chooseMsg, styles.chooseMsgLabel]}>Station Name</Text>
+                        </View>
                     </View>
-                </View>
-            }
-            {
-                tabContents !== 'QR Booking' &&
-                <View style={styles.bookingControlBtnContainer}>
-                    {
-                        buttonsData.map((buttons, index) => {
-                            const { Journey_Ticket_Button, Quick_Booking_Button, Platform_ticket_Button, Season_ticket_Button } = buttons;
-                            return (tabContents === 'Quick Booking' ? Quick_Booking_Button : tabContents === 'Platform Ticket' ? Platform_ticket_Button : tabContents === 'Season Ticket' ? Season_ticket_Button : Journey_Ticket_Button)?.map((btn, index) => {
-                                return <Pressable style={styles.gradientBtn} key={index}><GradientComponent><Text style={styles.bookingControlBtn}>{btn}</Text></GradientComponent></Pressable>
+                }
+                {
+                    tabContents !== 'QR Booking' &&
+                    <View style={styles.bookingControlBtnContainer}>
+                        {
+                            buttonsData.map((buttons, index) => {
+                                const { Journey_Ticket_Button, Quick_Booking_Button, Platform_ticket_Button, Season_ticket_Button } = buttons;
+                                return (tabContents === 'Quick Booking' ? Quick_Booking_Button : tabContents === 'Platform Ticket' ? Platform_ticket_Button : tabContents === 'Season Ticket' ? Season_ticket_Button : Journey_Ticket_Button)?.map((btn, index) => {
+                                    return <Pressable style={styles.gradientBtn} key={index}><GradientComponent><Text style={styles.bookingControlBtn}>{btn}</Text></GradientComponent></Pressable>
+                                })
+
                             })
-
-                        })
-                    }
-                </View>
-            }
-        </View>
+                        }
+                    </View>
+                }
+            </View>
+            <StationDatModal
+                modalVisibility={modalVisibility}
+                setModalVisibility={setModalVisibility}
+                setStations={setStations}
+                selectedStationOption={selectedStationOption}
+            />
+        </>
     )
 }
 
